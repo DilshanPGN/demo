@@ -21,11 +21,6 @@ public class MqConfig {
     @Value("${ibm.mq.connName}")
     private String connName;
 
-    @Value("${ibm.mq.user:}")
-    private String user;
-
-    @Value("${ibm.mq.password:}")
-    private String password;
 
     @Bean
     public MQConnectionFactory mqConnectionFactory() throws JMSException {
@@ -34,10 +29,10 @@ public class MqConfig {
         factory.setPort(Integer.parseInt(connName.split("\\(")[1].replace(")", "")));
         factory.setQueueManager(queueManager);
         factory.setChannel(channel);
-        factory.setTransportType(CommonConstants.WMQ_CM_CLIENT);
+//        factory.setTransportType(CommonConstants.WMQ_CM_CLIENT);
         
         // Completely disable MQCSP authentication - this is critical for your setup
-        factory.setBooleanProperty(CommonConstants.USER_AUTHENTICATION_MQCSP, false);
+//        factory.setBooleanProperty(CommonConstants.USER_AUTHENTICATION_MQCSP, false);
         
         // Don't set any user credentials - let the channel handle it with USERSRC(CHANNEL)
         // This matches your CHLAUTH configuration with USERSRC(CHANNEL)

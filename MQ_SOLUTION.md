@@ -29,7 +29,7 @@ Created custom MQ configuration to have full control over connection factory:
 
 **Channel Configuration:**
 ```mqsc
-ALTER CHANNEL('DEV.APP.SVRCONN') CHLTYPE(SVRCONN) MCAUSER('MUSR_MQADMIN')
+ALTER CHANNEL('DEV2.APP.SVRCONN') CHLTYPE(SVRCONN) MCAUSER('MUSR_MQADMIN')
 ```
 - Set MCAUSER to 'MUSR_MQADMIN' (a user that exists and has mqm group membership)
 - This allows any connection through this channel to have admin privileges
@@ -92,8 +92,8 @@ The application has been tested and verified:
 ## MQ Channel Configuration Used
 
 ```
-Queue Manager: QM1
-Channel: DEV.APP.SVRCONN
+Queue Manager: QM2
+Channel: DEV2.APP.SVRCONN
 Port: 1414
 Queue: DEV.QUEUE.1
 MCAUSER: MUSR_MQADMIN (has mqm permissions)
@@ -123,18 +123,18 @@ If you encounter issues after restarting:
 
 2. **Verify Channel Configuration:**
    ```cmd
-   echo "DISPLAY CHANNEL('DEV.APP.SVRCONN')" | runmqsc QM1
+   echo "DISPLAY CHANNEL('DEV2.APP.SVRCONN')" | runmqsc QM2
    ```
 
 3. **Check MQ Error Logs:**
    ```
-   C:\ProgramData\IBM\MQ\qmgrs\QM1\errors\AMQERR01.LOG
+   C:\ProgramData\IBM\MQ\qmgrs\QM2\errors\AMQERR01.LOG
    ```
 
 4. **Restart Queue Manager if needed:**
    ```cmd
-   endmqm -i QM1
-   strmqm QM1
+   endmqm -i QM2
+   strmqm QM2
    ```
 
 ## Success!

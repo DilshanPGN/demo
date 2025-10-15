@@ -24,7 +24,7 @@ public class DemoApplication {
 	@GetMapping("send")
 	String send(){
 		try{
-			jmsTemplate.convertAndSend("DEV.QUEUE.1", "Hello World!");
+			jmsTemplate.convertAndSend("DEV.QUEUE.2", "Hello World!");
 			return "OK";
 		}catch(JmsException ex){
 			ex.printStackTrace();
@@ -35,7 +35,7 @@ public class DemoApplication {
 	@GetMapping("recv")
 	String recv(){
 		try{
-			return jmsTemplate.receiveAndConvert("DEV.QUEUE.1").toString();
+			return jmsTemplate.receiveAndConvert("DEV.QUEUE.2").toString();
 		}catch(JmsException ex){
 			ex.printStackTrace();
 			return "FAIL";

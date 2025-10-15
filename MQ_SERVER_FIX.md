@@ -8,17 +8,17 @@ Connect to your IBM MQ server and run these commands:
 
 ```bash
 # Connect to the queue manager
-runmqsc QM1
+runmqsc YOUR_QM_NAME
 
-# Disable channel authentication for DEV.APP.SVRCONN
-SET CHLAUTH('DEV.APP.SVRCONN') TYPE(ADDRESSMAP) ADDRESS('*') USERSRC(CHANNEL) ACTION(REPLACE)
+# Disable channel authentication for your channel
+SET CHLAUTH('YOUR_CHANNEL_NAME') TYPE(ADDRESSMAP) ADDRESS('*') USERSRC(CHANNEL) ACTION(REPLACE)
 
 # Disable connection authentication (allow without credentials)
 ALTER AUTHINFO(SYSTEM.DEFAULT.AUTHINFO.IDPWOS) AUTHTYPE(IDPWOS) CHCKCLNT(OPTIONAL)
 REFRESH SECURITY TYPE(CONNAUTH)
 
-# Set channel MCAUSER to blank (runs under Queue Manager authority)
-ALTER CHANNEL('DEV.APP.SVRCONN') CHLTYPE(SVRCONN) MCAUSER(' ')
+# Set channel MCAUSER to an admin user (recommended) or blank
+ALTER CHANNEL('YOUR_CHANNEL_NAME') CHLTYPE(SVRCONN) MCAUSER('MUSR_MQADMIN')
 
 # Grant all users access to Queue Manager
 SET AUTHREC OBJTYPE(QMGR) GROUP('*') AUTHADD(CONNECT,INQ,DSP)
@@ -37,7 +37,7 @@ If you're using Docker, run IBM MQ Developer edition with authentication disable
 ```bash
 docker run --name ibm-mq ^
   --env LICENSE=accept ^
-  --env MQ_QMGR_NAME=QM1 ^
+  --env MQ_QMGR_NAME=YOUR_QM_NAME ^
   --env MQ_APP_PASSWORD=passw0rd ^
   --env MQ_ADMIN_PASSWORD=passw0rd ^
   --publish 1414:1414 ^
@@ -49,7 +49,7 @@ docker run --name ibm-mq ^
 Then run the commands from Option 1 inside the container:
 
 ```bash
-docker exec -it ibm-mq runmqsc QM1
+docker exec -it ibm-mq runmqsc YOUR_QM_NAME
 # Then run the SET CHLAUTH commands from above
 ```
 
@@ -58,7 +58,7 @@ docker exec -it ibm-mq runmqsc QM1
 ```bash
 docker run --name ibm-mq ^
   --env LICENSE=accept ^
-  --env MQ_QMGR_NAME=QM1 ^
+  --env MQ_QMGR_NAME=YOUR_QM_NAME ^
   --env MQ_DISABLE_AUTH=yes ^
   --publish 1414:1414 ^
   --publish 9443:9443 ^
@@ -73,8 +73,8 @@ If you prefer to keep authentication enabled, add credentials to your `applicati
 ```yaml
 ibm:
   mq:
-    queue-manager: QM1
-    channel: DEV.APP.SVRCONN
+    queue-manager: YOUR_QM_NAME
+    channel: YOUR_CHANNEL_NAME
     conn-name: localhost(1414)
     user: app        # or admin
     password: passw0rd
@@ -100,9 +100,9 @@ mqConnectionFactory.setStringProperty(WMQConstants.PASSWORD, password);
 Check your channel configuration:
 
 ```bash
-runmqsc QM1
-DISPLAY CHANNEL('DEV.APP.SVRCONN')
-DISPLAY CHLAUTH('DEV.APP.SVRCONN')
+runmqsc YOUR_QM_NAME
+DISPLAY CHANNEL('YOUR_CHANNEL_NAME')
+DISPLAY CHLAUTH('YOUR_CHANNEL_NAME')
 END
 ```
 
@@ -126,10 +126,10 @@ You can test the connection using IBM MQ sample programs:
 
 ```bash
 # Windows
-"C:\Program Files\IBM\MQ\Tools\Samples\bin\amqsputc.exe" DEV.QUEUE.1 QM1
+"C:\Program Files\IBM\MQ\Tools\Samples\bin\amqsputc.exe" YOUR.QUEUE.NAME YOUR_QM_NAME
 
 # Linux/Mac
-/opt/mqm/samp/bin/amqsputc DEV.QUEUE.1 QM1
+/opt/mqm/samp/bin/amqsputc YOUR.QUEUE.NAME YOUR_QM_NAME
 ```
 
 If this works without authentication, your Spring Boot application should also work.
