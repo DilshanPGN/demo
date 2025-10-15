@@ -24,12 +24,6 @@ public class MQConfig {
     @Value("${ibm.mq.conn-name}")
     private String connName;
 
-    @Value("${ibm.mq.user}")
-    private String user;
-
-    @Value("${ibm.mq.password}")
-    private String password;
-
     @Value("${mq.queue-name}")
     private String queueName;
 
@@ -41,8 +35,6 @@ public class MQConfig {
             mqConnectionFactory.setChannel(channel);
             mqConnectionFactory.setConnectionNameList(connName);
             mqConnectionFactory.setTransportType(WMQConstants.WMQ_CM_CLIENT);
-            mqConnectionFactory.setStringProperty(WMQConstants.USERID, user);
-            mqConnectionFactory.setStringProperty(WMQConstants.PASSWORD, password);
         } catch (Exception e) {
             throw new RuntimeException("Failed to create MQ Connection Factory", e);
         }
